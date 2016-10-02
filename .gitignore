@@ -1,5 +1,1 @@
-boot.o
-multiboot_header.o
-kernel.bin
-isofiles
-os.iso
+boot
