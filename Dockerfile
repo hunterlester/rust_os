@@ -6,7 +6,9 @@ RUN apt-get update && apt-get install -y \
 	build-essential \
 	curl \
 	file \
-	sudo
+	sudo \
+	grub \
+	grub-pc-bin
 #ENV SHELL /bin/bash
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
 RUN echo "export PATH=~/.cargo/bin:$PATH" >> ~/.bashrc
