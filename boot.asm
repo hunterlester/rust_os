@@ -61,6 +61,16 @@ start:
     mov word [0xb8014], 0x026c ; l
     mov word [0xb8016], 0x0264 ; d
     mov word [0xb8018], 0x0221 ; !
+
+    lgdt [gdt64.pointer]
+
+    mov ax, gdt64.data
+    mov ss, ax
+    mov ds, ax
+    mov es, ax
+
+    jmp gdt64.code:long_mode_start
+
     hlt
 
 section .bss
@@ -73,3 +83,25 @@ p3_table:
   resb 4096
 p2_table:
   resb 4096
+
+section .rodata
+gdt64:
+    dq 0
+
+ .code: equ $ - gdt64
+    dq (1<<44) | (1<<47) | (1<<41) | (1<<43) |(1<<53)
+
+ .data: equ $ - gdt64
+    dq (1<<44) | (1<<47) | (1<<41)
+
+ .pointer:
+    dw .pointer - gdt64 - 1
+    dq gdt64
+
+section .text
+bits 64
+long_mode_start:
+    mov rax, 0x2f592f412f4b2f4f
+    mov qword [0xb8000], rax
+
+    hlt
